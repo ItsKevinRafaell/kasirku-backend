@@ -28,7 +28,9 @@ class Pos extends Component implements HasForms
     public $total_price;
     public $gender;
     public $payment_method_id;
-    
+
+    protected $listeners = ['scanResult' => 'handleScanResult'];
+
     public function render()
     {
         return view('livewire.pos', [
@@ -100,7 +102,7 @@ class Pos extends Component implements HasForms
                 ->title('Produk Ditambahkan')
                 ->success()
                 ->send();
-        }    
+        }
     }
 
     public function loadOrderItems($orderItems){
@@ -202,4 +204,16 @@ class Pos extends Component implements HasForms
             'payment_methods' => $this->payment_methods,
         ]);
     }
+
+    public function handleScanResult($decodedText){
+        $product = Product::where('barcode', $decodedText)->first();
+            if($product){
+                $this->addToOrder($product->id);
+            }else{
+                Notification::make()
+                    ->title('Product Not Found ' . $decodedText)
+                    ->danger()
+                    ->send();
+            }
+        }
 }
