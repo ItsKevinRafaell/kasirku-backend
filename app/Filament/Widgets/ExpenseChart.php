@@ -13,6 +13,7 @@ class ExpenseChart extends ChartWidget
     protected static ?string $heading = 'Expense';
     protected static ?int $sort = 2;
     public ?string $filter = 'today';
+    protected static string $color = 'danger';
 
     protected function getData(): array
     {
