@@ -20,15 +20,17 @@ class ProductAlert extends BaseWidget
                 Product::query()->where('stock', '<=', 10)->orderBy('stock', 'asc')
             )
             ->columns([
+                Tables\Columns\ImageColumn::make('image'),
                  Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
                  Tables\Columns\TextColumn::make('stock')
+                    ->label('Stock')
                     ->numeric()
-                    ->color(static function ($value) {
-                       if ($value <= 5) {
+                    ->badge()
+                    ->color(static function ($state) : string {
+                       if ($state <= 5) {
                            return 'danger';
-                       } elseif ($value <= 10) {
+                       } elseif ($state <= 10) {
                            return 'warning';
                        }
                     })

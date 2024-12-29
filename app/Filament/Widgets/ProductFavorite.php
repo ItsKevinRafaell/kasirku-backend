@@ -21,10 +21,13 @@ class ProductFavorite extends BaseWidget
         return $table
             ->query( $productQuery)
             ->columns([
+                Tables\Columns\ImageColumn::make('image'),
                  Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
                     Tables\Columns\TextColumn::make('order_products_count')
+                    ->label('Total Order')
+                    ->badge()
+                    ->color('success')
                     ->numeric()
                     ->sortable(),
             ])
